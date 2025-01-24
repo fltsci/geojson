@@ -48,6 +48,7 @@ pub type Value = GeometryValue;
 /// # test()
 /// ```
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "specta", derive(specta::Type))]
 #[serde(tag = "type")]
 pub enum GeometryValue {
     /// Point
@@ -238,6 +239,7 @@ impl<'a> From<&'a GeometryValue> for JsonValue {
 /// # }
 /// ```
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "specta", derive(specta::Type))]
 #[serde(try_from = "deserialize::RawGeometry")]
 pub struct Geometry {
     /// Bounding Box

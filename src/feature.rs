@@ -61,6 +61,7 @@ use serde::{Deserialize, Serialize};
 /// assert_eq!(feature, expected);
 /// ```
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "specta", derive(specta::Type))]
 #[serde(tag = "type", from = "deserialize::DeserializeFeatureHelper")]
 pub struct Feature {
     /// Bounding Box
@@ -242,6 +243,7 @@ impl Feature {
 ///
 /// [GeoJSON Format Specification 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "specta", derive(specta::Type))]
 #[serde(untagged, expecting = "Feature 'id' must be a string or a number")]
 pub enum Id {
     String(String),
