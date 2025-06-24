@@ -16,9 +16,9 @@ use std::convert::TryFrom;
 use std::str::FromStr;
 
 use crate::errors::{Error, Result};
-use crate::{util, Feature, Geometry, Value};
+use crate::{Feature, Geometry, Value, util};
 use crate::{JsonObject, JsonValue};
-use serde::{ser::SerializeMap, Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer, ser::SerializeMap};
 
 impl From<Geometry> for Feature {
     fn from(geom: Geometry) -> Feature {
@@ -211,8 +211,8 @@ impl Serialize for Id {
         S: Serializer,
     {
         match self {
-            Id::String(ref s) => s.serialize(serializer),
-            Id::Number(ref n) => n.serialize(serializer),
+            Id::String(s) => s.serialize(serializer),
+            Id::Number(n) => n.serialize(serializer),
         }
     }
 }
@@ -220,7 +220,7 @@ impl Serialize for Id {
 #[cfg(test)]
 mod tests {
     use crate::JsonObject;
-    use crate::{feature, Error, Feature, GeoJson, Geometry, Value};
+    use crate::{Error, Feature, GeoJson, Geometry, Value, feature};
     use serde_json::json;
 
     use std::str::FromStr;
@@ -326,7 +326,10 @@ mod tests {
     #[test]
     fn test_display_feature() {
         let f = feature().to_string();
-        assert_eq!(f, "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1.1,2.1]},\"properties\":{}}");
+        assert_eq!(
+            f,
+            "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1.1,2.1]},\"properties\":{}}"
+        );
     }
 
     #[test]

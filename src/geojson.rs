@@ -309,9 +309,9 @@ impl Serialize for GeoJson {
         S: Serializer,
     {
         match self {
-            GeoJson::Geometry(ref geometry) => geometry.serialize(serializer),
-            GeoJson::Feature(ref feature) => feature.serialize(serializer),
-            GeoJson::FeatureCollection(ref fc) => fc.serialize(serializer),
+            GeoJson::Geometry(geometry) => geometry.serialize(serializer),
+            GeoJson::Feature(feature) => feature.serialize(serializer),
+            GeoJson::FeatureCollection(fc) => fc.serialize(serializer),
         }
     }
 }
