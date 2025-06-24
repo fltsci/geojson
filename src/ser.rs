@@ -98,7 +98,7 @@
 //! ```
 use crate::{Feature, JsonObject, JsonValue, Result};
 
-use serde::{ser::Error, Serialize, Serializer};
+use serde::{Serialize, Serializer, ser::Error};
 
 use crate::util::expect_owned_object;
 use std::convert::TryFrom;
@@ -313,7 +313,7 @@ where
 ///
 /// let geojson_string = geojson::ser::to_feature_collection_string(&my_structs).unwrap();
 ///
-/// assert!(geojson_string.contains(r#""geometry":{"coordinates":[11.1,22.2],"type":"Point"}"#));
+/// assert!(geojson_string.contains(r#""geometry":{"type":"Point","coordinates":[11.1,22.2]}"#));
 /// ```
 pub fn serialize_geometry<IG, S>(geometry: IG, ser: S) -> std::result::Result<S::Ok, S::Error>
 where
@@ -448,19 +448,19 @@ where
             match value {
                 JsonValue::Object(object) => object,
                 JsonValue::Null => {
-                    return Err(S::Error::custom("expected JSON object but found `null`"))
+                    return Err(S::Error::custom("expected JSON object but found `null`"));
                 }
                 JsonValue::Bool(_) => {
-                    return Err(S::Error::custom("expected JSON object but found `bool`"))
+                    return Err(S::Error::custom("expected JSON object but found `bool`"));
                 }
                 JsonValue::Number(_) => {
-                    return Err(S::Error::custom("expected JSON object but found `number`"))
+                    return Err(S::Error::custom("expected JSON object but found `number`"));
                 }
                 JsonValue::String(_) => {
-                    return Err(S::Error::custom("expected JSON object but found `string`"))
+                    return Err(S::Error::custom("expected JSON object but found `string`"));
                 }
                 JsonValue::Array(_) => {
-                    return Err(S::Error::custom("expected JSON object but found `array`"))
+                    return Err(S::Error::custom("expected JSON object but found `array`"));
                 }
             }
         };
@@ -633,8 +633,8 @@ mod tests {
     #[cfg(feature = "geo-types")]
     mod geo_types_tests {
         use super::*;
-        use crate::de::tests::feature_collection;
         use crate::Geometry;
+        use crate::de::tests::feature_collection;
 
         #[test]
         fn serializes_optional_point() {

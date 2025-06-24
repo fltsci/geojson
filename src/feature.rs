@@ -19,6 +19,7 @@ use crate::errors::{Error, Result};
 use crate::{Feature, Geometry, Value, util};
 use crate::{JsonObject, JsonValue};
 use serde::{Deserialize, Deserializer, Serialize, Serializer, ser::SerializeMap};
+use specta::Type;
 
 impl From<Geometry> for Feature {
     fn from(geom: Geometry) -> Feature {
@@ -199,10 +200,35 @@ impl<'de> Deserialize<'de> for Feature {
 /// Feature identifier
 ///
 /// [GeoJSON Format Specification § 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Type)]
+#[specta(untagged)]
 pub enum Id {
     String(String),
     Number(serde_json::Number),
+}
+
+impl From<String> for Id {
+    fn from(s: String) -> Self {
+        Id::String(s)
+    }
+}
+
+impl From<Id> for String {
+    fn from(id: Id) -> Self {
+        match id {
+            Id::String(s) => s,
+            Id::Number(n) => n.to_string(),
+        }
+    }
+}
+
+impl ToString for Id {
+    fn to_string(&self) -> String {
+        match self {
+            Id::String(s) => s.clone(),
+            Id::Number(n) => n.to_string(),
+        }
+    }
 }
 
 impl Serialize for Id {

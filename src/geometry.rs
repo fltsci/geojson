@@ -16,9 +16,12 @@ use std::str::FromStr;
 use std::{convert::TryFrom, fmt};
 
 use crate::errors::{Error, Result};
-use crate::{util, Bbox, LineStringType, PointType, PolygonType};
+use crate::{
+    Bbox, LineStringSlice, LineStringType, PointSlice, PointType, PolygonSlice, PolygonType, util,
+};
 use crate::{JsonObject, JsonValue};
-use serde::{ser::SerializeMap, Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer, ser::SerializeMap};
+use specta::Type;
 
 /// The underlying value for a `Geometry`.
 ///
@@ -45,42 +48,44 @@ use serde::{ser::SerializeMap, Deserialize, Deserializer, Serialize, Serializer}
 /// # fn test() {}
 /// # test()
 /// ```
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Type)]
+#[specta(tag = "type", content = "coordinates")]
 pub enum Value {
     /// Point
     ///
     /// [GeoJSON Format Specification § 3.1.2](https://tools.ietf.org/html/rfc7946#section-3.1.2)
-    Point(PointType),
+    Point(#[specta(type = PointSlice)] PointType),
 
     /// MultiPoint
     ///
     /// [GeoJSON Format Specification § 3.1.3](https://tools.ietf.org/html/rfc7946#section-3.1.3)
-    MultiPoint(Vec<PointType>),
+    MultiPoint(#[specta(type = Vec<PointSlice>)] Vec<PointType>),
 
     /// LineString
     ///
     /// [GeoJSON Format Specification § 3.1.4](https://tools.ietf.org/html/rfc7946#section-3.1.4)
-    LineString(LineStringType),
+    LineString(#[specta(type = LineStringSlice)] LineStringType),
 
     /// MultiLineString
     ///
     /// [GeoJSON Format Specification § 3.1.5](https://tools.ietf.org/html/rfc7946#section-3.1.5)
-    MultiLineString(Vec<LineStringType>),
+    MultiLineString(#[specta(type = Vec<LineStringSlice>)] Vec<LineStringType>),
 
     /// Polygon
     ///
     /// [GeoJSON Format Specification § 3.1.6](https://tools.ietf.org/html/rfc7946#section-3.1.6)
-    Polygon(PolygonType),
+    Polygon(#[specta(type = PolygonSlice)] PolygonType),
 
     /// MultiPolygon
     ///
     /// [GeoJSON Format Specification § 3.1.7](https://tools.ietf.org/html/rfc7946#section-3.1.7)
-    MultiPolygon(Vec<PolygonType>),
+    MultiPolygon(#[specta(type = Vec<PolygonSlice>)] Vec<PolygonType>),
 
     /// GeometryCollection
     ///
     /// [GeoJSON Format Specification § 3.1.8](https://tools.ietf.org/html/rfc7946#section-3.1.8)
-    GeometryCollection(Vec<Geometry>),
+    #[specta(skip)]
+    GeometryCollection(#[specta(type = Vec<Geometry>)] Vec<Geometry>),
 }
 
 impl Value {
@@ -258,12 +263,16 @@ impl Serialize for Value {
 /// # #[cfg(feature = "geo-types")]
 /// let geom: geo_types::Geometry<f64> = geometry.try_into().unwrap();
 /// ```
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Type)]
+#[specta(rename_all = "camelCase")]
 pub struct Geometry {
     /// Bounding Box
     ///
     /// [GeoJSON Format Specification § 5](https://tools.ietf.org/html/rfc7946#section-5)
+    #[serde(optional, skip_serializing_if = "Option::is_none")]
+    #[specta(type = crate::BboxSlice)]
     pub bbox: Option<Bbox>,
+    #[specta(inline, flatten)]
     pub value: Value,
     /// Foreign Members
     ///
@@ -466,7 +475,7 @@ mod tests {
     fn test_value_display() {
         let v = Value::LineString(vec![vec![0.0, 0.1], vec![0.1, 0.2], vec![0.2, 0.3]]);
         assert_eq!(
-            "{\"coordinates\":[[0.0,0.1],[0.1,0.2],[0.2,0.3]],\"type\":\"LineString\"}",
+            "{\"type\":\"LineString\",\"coordinates\":[[0.0,0.1],[0.1,0.2],[0.2,0.3]]}",
             v.to_string()
         );
     }

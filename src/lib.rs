@@ -374,15 +374,20 @@
 ///
 /// [GeoJSON Format Specification § 5](https://tools.ietf.org/html/rfc7946#section-5)
 pub type Bbox = Vec<f64>;
+pub type BboxSlice = [f64; 4];
 
 /// Positions
 ///
 /// [GeoJSON Format Specification § 3.1.1](https://tools.ietf.org/html/rfc7946#section-3.1.1)
 pub type Position = Vec<f64>;
+pub type PositionSlice = [f64; 2];
 
 pub type PointType = Position;
+pub type PointSlice = PositionSlice;
 pub type LineStringType = Vec<Position>;
+pub type LineStringSlice = Vec<PositionSlice>;
 pub type PolygonType = Vec<Vec<Position>>;
+pub type PolygonSlice = Vec<Vec<PositionSlice>>;
 
 mod util;
 
@@ -420,6 +425,8 @@ pub use feature_reader::FeatureReader;
 mod feature_writer;
 pub use feature_writer::FeatureWriter;
 
+use specta::Type;
+
 #[allow(deprecated)]
 #[cfg(feature = "geo-types")]
 pub use conversion::quick_collection;
@@ -427,19 +434,23 @@ pub use conversion::quick_collection;
 /// Feature Objects
 ///
 /// [GeoJSON Format Specification § 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
-#[derive(Clone, Debug, Default, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq, Type)]
+#[serde(rename_all = "camelCase", tag = "type", content = "Feature")]
 pub struct Feature {
     /// Bounding Box
     ///
     /// [GeoJSON Format Specification § 5](https://tools.ietf.org/html/rfc7946#section-5)
+    #[specta(type = crate::BboxSlice)]
     pub bbox: Option<Bbox>,
     /// Geometry
     ///
     /// [GeoJSON Format Specification § 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
+    #[specta(type = Geometry)]
     pub geometry: Option<Geometry>,
     /// Identifier
     ///
     /// [GeoJSON Format Specification § 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
+    #[specta(type=feature::Id)]
     pub id: Option<feature::Id>,
     /// Properties
     ///
@@ -448,10 +459,12 @@ pub struct Feature {
     /// NOTE: This crate will permissively parse a Feature whose json is missing a `properties` key.
     /// Because the spec implies that the `properties` key must be present, we will always include
     /// the `properties` key when serializing.
+    #[serde(rename_all = "camelCase")]
     pub properties: Option<JsonObject>,
     /// Foreign Members
     ///
     /// [GeoJSON Format Specification § 6](https://tools.ietf.org/html/rfc7946#section-6)
+    #[serde(rename_all = "camelCase")]
     pub foreign_members: Option<JsonObject>,
 }
 

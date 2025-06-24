@@ -16,6 +16,7 @@ use crate::errors::{Error, Result};
 use crate::{Feature, FeatureCollection, Geometry};
 use crate::{JsonObject, JsonValue};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use specta::Type as SpectaType;
 use std::convert::TryFrom;
 use std::fmt;
 use std::iter::FromIterator;
@@ -43,7 +44,7 @@ use std::str::FromStr;
 /// let feature2: Feature = geojson.try_into().unwrap();
 /// ```
 /// [GeoJSON Format Specification § 3](https://tools.ietf.org/html/rfc7946#section-3)
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, SpectaType)]
 pub enum GeoJson {
     Geometry(Geometry),
     Feature(Feature),

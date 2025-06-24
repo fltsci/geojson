@@ -1,6 +1,6 @@
 use geo_types::{self, CoordFloat};
 
-use crate::{geometry, Feature, FeatureCollection};
+use crate::{Feature, FeatureCollection, geometry};
 
 use crate::{LineStringType, PointType, PolygonType};
 use std::convert::From;
@@ -240,11 +240,13 @@ fn create_polygon_type<T>(polygon: &geo_types::Polygon<T>) -> PolygonType
 where
     T: CoordFloat,
 {
-    let mut coords = vec![polygon
-        .exterior()
-        .points()
-        .map(|point| create_point_type(&point))
-        .collect()];
+    let mut coords = vec![
+        polygon
+            .exterior()
+            .points()
+            .map(|point| create_point_type(&point))
+            .collect(),
+    ];
 
     coords.extend(
         polygon

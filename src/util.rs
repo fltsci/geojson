@@ -13,7 +13,7 @@
 // limitations under the License.
 
 use crate::errors::{Error, Result};
-use crate::{feature, Bbox, Feature, Geometry, Position, Value};
+use crate::{Bbox, Feature, Geometry, Position, Value, feature};
 use crate::{JsonObject, JsonValue};
 
 pub fn expect_type(value: &mut JsonObject) -> Result<String> {

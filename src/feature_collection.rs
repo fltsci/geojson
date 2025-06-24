@@ -13,12 +13,13 @@
 // limitations under the License.
 
 use serde::ser::SerializeMap;
+use specta::Type;
 use std::convert::TryFrom;
 use std::iter::FromIterator;
 use std::str::FromStr;
 
 use crate::errors::{Error, Result};
-use crate::{util, Bbox, Feature};
+use crate::{Bbox, Feature, util};
 use crate::{JsonObject, JsonValue};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
@@ -61,11 +62,14 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 ///     .collect();
 /// assert_eq!(fc.features.len(), 10);
 /// ```
-#[derive(Clone, Debug, Default, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq, Type)]
+#[specta(rename_all = "camelCase", tag = "type")]
 pub struct FeatureCollection {
     /// Bounding Box
     ///
     /// [GeoJSON Format Specification § 5](https://tools.ietf.org/html/rfc7946#section-5)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[specta(optional, type = crate::BboxSlice)]
     pub bbox: Option<Bbox>,
     pub features: Vec<Feature>,
     /// Foreign Members
@@ -100,7 +104,10 @@ impl<'a> From<&'a FeatureCollection> for JsonObject {
             value => {
                 // Panic should never happen, because `impl Serialize for FeatureCollection` always produces an
                 // Object
-                panic!("serializing FeatureCollection should result in an Object, but got something {:?}", value)
+                panic!(
+                    "serializing FeatureCollection should result in an Object, but got something {:?}",
+                    value
+                )
             }
         }
     }

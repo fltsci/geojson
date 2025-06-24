@@ -16,6 +16,7 @@
 use crate::{Feature, Result};
 
 use serde::Deserialize;
+use specta::Type;
 use std::io;
 use std::marker::PhantomData;
 
@@ -24,6 +25,7 @@ use std::marker::PhantomData;
     since = "0.24.0",
     note = "use FeatureReader::from_reader(io).features() instead"
 )]
+#[derive(Debug)]
 /// Iteratively deserialize individual features from a stream containing a
 /// GeoJSON [`FeatureCollection`](struct@crate::FeatureCollection)
 ///
@@ -41,7 +43,7 @@ pub struct FeatureIterator<'de, R, D = Feature> {
 }
 
 #[allow(clippy::enum_variant_names)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Type)]
 enum State {
     BeforeFeatures,
     DuringFeatures,
