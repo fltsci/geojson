@@ -17,10 +17,10 @@ use std::{convert::TryFrom, fmt};
 
 use crate::errors::{Error, Result};
 use crate::{
-    Bbox, LineStringSlice, LineStringType, PointSlice, PointType, PolygonSlice, PolygonType, util,
+    util, Bbox, LineStringSlice, LineStringType, PointSlice, PointType, PolygonSlice, PolygonType,
 };
 use crate::{JsonObject, JsonValue};
-use serde::{Deserialize, Deserializer, Serialize, Serializer, ser::SerializeMap};
+use serde::{ser::SerializeMap, Deserialize, Deserializer, Serialize, Serializer};
 use specta::Type;
 
 /// The underlying value for a `Geometry`.
@@ -263,6 +263,9 @@ impl Serialize for Value {
 /// # #[cfg(feature = "geo-types")]
 /// let geom: geo_types::Geometry<f64> = geometry.try_into().unwrap();
 /// ```
+#[serde_with::apply(
+    Option => #[serde(default)] #[serde(skip_serializing_if = "Option::is_none")],
+)]
 #[derive(Clone, Debug, PartialEq, Type)]
 #[specta(rename_all = "camelCase")]
 pub struct Geometry {
@@ -277,6 +280,7 @@ pub struct Geometry {
     /// Foreign Members
     ///
     /// [GeoJSON Format Specification § 6](https://tools.ietf.org/html/rfc7946#section-6)
+    #[specta(optional)]
     pub foreign_members: Option<JsonObject>,
 }
 

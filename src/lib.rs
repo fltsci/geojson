@@ -465,6 +465,7 @@ pub struct Feature {
     ///
     /// [GeoJSON Format Specification § 6](https://tools.ietf.org/html/rfc7946#section-6)
     #[serde(rename_all = "camelCase")]
+    #[specta(optional)]
     pub foreign_members: Option<JsonObject>,
 }
 

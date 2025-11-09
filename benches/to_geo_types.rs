@@ -1,4 +1,5 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+#![allow(deprecated)]
+use criterion::{Criterion, black_box, criterion_group, criterion_main};
 use std::convert::TryFrom;
 
 fn benchmark_group(c: &mut Criterion) {

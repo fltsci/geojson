@@ -19,7 +19,7 @@ use std::iter::FromIterator;
 use std::str::FromStr;
 
 use crate::errors::{Error, Result};
-use crate::{Bbox, Feature, util};
+use crate::{util, Bbox, Feature};
 use crate::{JsonObject, JsonValue};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
@@ -62,6 +62,9 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 ///     .collect();
 /// assert_eq!(fc.features.len(), 10);
 /// ```
+#[serde_with::apply(
+    Option => #[serde(default)] #[serde(skip_serializing_if = "Option::is_none")],
+)]
 #[derive(Clone, Debug, Default, PartialEq, Type)]
 #[specta(rename_all = "camelCase", tag = "type")]
 pub struct FeatureCollection {
@@ -75,6 +78,7 @@ pub struct FeatureCollection {
     /// Foreign Members
     ///
     /// [GeoJSON Format Specification § 6](https://tools.ietf.org/html/rfc7946#section-6)
+    #[specta(optional)]
     pub foreign_members: Option<JsonObject>,
 }
 

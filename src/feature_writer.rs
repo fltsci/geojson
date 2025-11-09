@@ -261,7 +261,7 @@ impl<W: Write> Drop for FeatureWriter<W> {
     fn drop(&mut self) {
         if self.state != State::Finished {
             _ = self.finish().map_err(|e| {
-               log::error!("FeatureWriter errored while finishing in Drop impl. To handle errors like this, explicitly call `FeatureWriter::finish`. Error: {}", e);
+               tracing::error!("FeatureWriter errored while finishing in Drop impl. To handle errors like this, explicitly call `FeatureWriter::finish`. Error: {}", e);
             });
         }
     }

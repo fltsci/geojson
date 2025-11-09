@@ -1,4 +1,5 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+#![allow(deprecated)]
+use criterion::{Criterion, black_box, criterion_group, criterion_main};
 use geojson::{de::deserialize_geometry, ser::serialize_geometry};
 
 fn serialize_feature_collection_benchmark(c: &mut Criterion) {

@@ -465,7 +465,7 @@ where
                     return Err(Error::custom("GeoJSON Feature had unexpected `properties`"));
                 }
             } else {
-                log::debug!("foreign members are not handled by Feature deserializer")
+                tracing::debug!("foreign members are not handled by Feature deserializer")
             }
         }
 

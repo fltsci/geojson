@@ -16,9 +16,10 @@ default = ["geo-types"]
 [dependencies]
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = { version = "1.0.140", features = ["preserve_order"] }
+serde_with = "3.15.1"
 geo-types = { version = "0.7.13", features = ["serde"], optional = true }
 thiserror = "2.0.12"
-log = "0.4.27"
+tracing = "0.1.41"
 specta = { version = "=2.0.0-rc.22", features = [
     "derive",
     "export",
@@ -34,7 +35,7 @@ specta = { version = "=2.0.0-rc.22", features = [
 
 [dev-dependencies]
 num-traits = "0.2"
-criterion = "0.5.1"
+criterion = "0.7.0"
 
 [[bench]]
 name = "parse"
