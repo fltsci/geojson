@@ -245,8 +245,7 @@ impl Feature {
 #[serde(untagged, expecting = "Feature 'id' must be a string or a number")]
 pub enum Id {
     String(String),
-    #[specta(type = f64)]
-    Number(serde_json::Number),
+    Number(#[specta(type = f64)] serde_json::Number),
 }
 
 #[cfg(test)]
