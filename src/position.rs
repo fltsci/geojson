@@ -28,8 +28,8 @@ use tinyvec::TinyVec;
 /// let position_3d = Position::from(vec![1.0, 2.0, 3.0]);
 /// let z = position_3d[2];
 /// ```
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize, Deserialize)]
-pub struct Position(TinyVec<[f64; 2]>);
+#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize, Deserialize, specta::Type)]
+pub struct Position(#[specta(type = Vec<f64>)] TinyVec<[f64; 2]>);
 
 impl Position {
     pub fn as_slice(&self) -> &[f64] {

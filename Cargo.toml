@@ -20,6 +20,7 @@ geo-types = { version = "0.7.13", features = ["serde"], optional = true }
 thiserror = "2.0.6"
 log = "0.4.17"
 tinyvec = { version = "1.10.0", features = ["serde", "alloc"] }
+specta = { version = "=2.0.0-rc.24", features = ["derive", "serde_json"] }
 
 [dev-dependencies]
 num-traits = "0.2"
