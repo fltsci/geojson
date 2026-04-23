@@ -249,7 +249,11 @@ impl Feature {
 /// [GeoJSON Format Specification 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "specta", derive(specta::Type))]
-#[serde(untagged, expecting = "Feature 'id' must be a string or a number")]
+#[serde(untagged)]
+#[cfg_attr(
+    not(feature = "specta"),
+    serde(expecting = "Feature 'id' must be a string or a number")
+)]
 pub enum Id {
     String(String),
     Number(serde_json::Number),
