@@ -61,7 +61,7 @@ use serde::{Deserialize, Serialize};
 /// assert_eq!(feature, expected);
 /// ```
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, specta::Type)]
-#[serde(tag = "type", from = "deserialize::DeserializeFeatureHelper")]
+#[serde(tag = "type")]
 pub struct Feature {
     /// Bounding Box
     ///

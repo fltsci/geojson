@@ -238,7 +238,6 @@ impl<'a> From<&'a GeometryValue> for JsonValue {
 /// # }
 /// ```
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, specta::Type)]
-#[serde(try_from = "deserialize::RawGeometry")]
 pub struct Geometry {
     /// Bounding Box
     ///
