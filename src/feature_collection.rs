@@ -85,6 +85,7 @@ use serde::{Deserialize, Serialize};
 /// assert_eq!(fc.features.len(), 10);
 /// ```
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "specta", derive(specta::Type))]
 #[serde(tag = "type", from = "deserialize::DeserializeFeatureCollectionHelper")]
 pub struct FeatureCollection {
     /// Bounding Box
@@ -100,6 +101,7 @@ pub struct FeatureCollection {
     /// See the [crate-level foreign members documentation](crate#foreign-members) for details,
     /// including limitations on key names.
     #[serde(flatten, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "specta", specta(skip))]
     pub foreign_members: Option<JsonObject>,
 }
 
