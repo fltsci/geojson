@@ -32,7 +32,7 @@ use std::marker::PhantomData;
 ///
 /// Based on example code found at <https://github.com/serde-rs/serde/issues/903#issuecomment-297488118>.
 ///
-/// [GeoJSON Format Specification § 3.3](https://datatracker.ietf.org/doc/html/rfc7946#section-3.3)
+/// [GeoJSON Format Specification 3.3](https://datatracker.ietf.org/doc/html/rfc7946#section-3.3)
 pub struct FeatureIterator<'de, R, D = Feature> {
     reader: R,
     state: State,

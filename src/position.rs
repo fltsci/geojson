@@ -5,7 +5,7 @@ use tinyvec::TinyVec;
 
 /// Positions
 ///
-/// [GeoJSON Format Specification § 3.1.1](https://tools.ietf.org/html/rfc7946#section-3.1.1)
+/// [GeoJSON Format Specification 3.1.1](https://tools.ietf.org/html/rfc7946#section-3.1.1)
 ///
 /// ## Examples
 /// ```

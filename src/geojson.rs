@@ -75,7 +75,7 @@ use std::str::FromStr;
 /// // Fallibly convert a GeoJson to its inner variant
 /// let feature: Feature = geojson.try_into().expect("expected a Feature");
 /// ```
-/// [GeoJSON Format Specification § 3](https://tools.ietf.org/html/rfc7946#section-3)
+/// [GeoJSON Format Specification 3](https://tools.ietf.org/html/rfc7946#section-3)
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(untagged, try_from = "deserialize::RawGeoJson")]
 pub enum GeoJson {
