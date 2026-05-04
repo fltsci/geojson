@@ -101,6 +101,7 @@ pub struct FeatureCollection {
     /// See the [crate-level foreign members documentation](crate#foreign-members) for details,
     /// including limitations on key names.
     #[serde(flatten, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "specta", specta(skip))]
     pub foreign_members: Option<JsonObject>,
 }
 
