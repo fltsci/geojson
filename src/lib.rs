@@ -398,7 +398,7 @@
 
 /// Bounding Boxes
 ///
-/// [GeoJSON Format Specification § 5](https://tools.ietf.org/html/rfc7946#section-5)
+/// [GeoJSON Format Specification 5](https://tools.ietf.org/html/rfc7946#section-5)
 pub type Bbox = Vec<f64>;
 
 mod position;

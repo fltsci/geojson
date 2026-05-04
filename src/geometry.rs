@@ -52,37 +52,37 @@ pub type Value = GeometryValue;
 pub enum GeometryValue {
     /// Point
     ///
-    /// [GeoJSON Format Specification § 3.1.2](https://tools.ietf.org/html/rfc7946#section-3.1.2)
+    /// [GeoJSON Format Specification 3.1.2](https://tools.ietf.org/html/rfc7946#section-3.1.2)
     Point { coordinates: PointType },
 
     /// MultiPoint
     ///
-    /// [GeoJSON Format Specification § 3.1.3](https://tools.ietf.org/html/rfc7946#section-3.1.3)
+    /// [GeoJSON Format Specification 3.1.3](https://tools.ietf.org/html/rfc7946#section-3.1.3)
     MultiPoint { coordinates: Vec<PointType> },
 
     /// LineString
     ///
-    /// [GeoJSON Format Specification § 3.1.4](https://tools.ietf.org/html/rfc7946#section-3.1.4)
+    /// [GeoJSON Format Specification 3.1.4](https://tools.ietf.org/html/rfc7946#section-3.1.4)
     LineString { coordinates: LineStringType },
 
     /// MultiLineString
     ///
-    /// [GeoJSON Format Specification § 3.1.5](https://tools.ietf.org/html/rfc7946#section-3.1.5)
+    /// [GeoJSON Format Specification 3.1.5](https://tools.ietf.org/html/rfc7946#section-3.1.5)
     MultiLineString { coordinates: Vec<LineStringType> },
 
     /// Polygon
     ///
-    /// [GeoJSON Format Specification § 3.1.6](https://tools.ietf.org/html/rfc7946#section-3.1.6)
+    /// [GeoJSON Format Specification 3.1.6](https://tools.ietf.org/html/rfc7946#section-3.1.6)
     Polygon { coordinates: PolygonType },
 
     /// MultiPolygon
     ///
-    /// [GeoJSON Format Specification § 3.1.7](https://tools.ietf.org/html/rfc7946#section-3.1.7)
+    /// [GeoJSON Format Specification 3.1.7](https://tools.ietf.org/html/rfc7946#section-3.1.7)
     MultiPolygon { coordinates: Vec<PolygonType> },
 
     /// GeometryCollection
     ///
-    /// [GeoJSON Format Specification § 3.1.8](https://tools.ietf.org/html/rfc7946#section-3.1.8)
+    /// [GeoJSON Format Specification 3.1.8](https://tools.ietf.org/html/rfc7946#section-3.1.8)
     GeometryCollection { geometries: Vec<Geometry> },
 }
 
@@ -169,7 +169,7 @@ impl<'a> From<&'a GeometryValue> for JsonValue {
 
 /// Geometry Object
 ///
-/// [GeoJSON Format Specification § 3.1](https://tools.ietf.org/html/rfc7946#section-3.1)
+/// [GeoJSON Format Specification 3.1](https://tools.ietf.org/html/rfc7946#section-3.1)
 ///
 /// ## Examples
 ///
@@ -242,7 +242,7 @@ impl<'a> From<&'a GeometryValue> for JsonValue {
 pub struct Geometry {
     /// Bounding Box
     ///
-    /// [GeoJSON Format Specification § 5](https://tools.ietf.org/html/rfc7946#section-5)
+    /// [GeoJSON Format Specification 5](https://tools.ietf.org/html/rfc7946#section-5)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub bbox: Option<Bbox>,
 
@@ -251,7 +251,7 @@ pub struct Geometry {
 
     /// Foreign Members
     ///
-    /// [GeoJSON Format Specification § 6](https://tools.ietf.org/html/rfc7946#section-6.1)
+    /// [GeoJSON Format Specification 6](https://tools.ietf.org/html/rfc7946#section-6.1)
     ///
     /// See the [crate-level foreign members documentation](crate#foreign-members) for details,
     /// including limitations on key names.

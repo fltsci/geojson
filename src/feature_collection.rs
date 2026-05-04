@@ -22,7 +22,7 @@ use serde::{Deserialize, Serialize};
 
 /// Feature Collection Object
 ///
-/// [GeoJSON Format Specification § 3.3](https://tools.ietf.org/html/rfc7946#section-3.3)
+/// [GeoJSON Format Specification 3.3](https://tools.ietf.org/html/rfc7946#section-3.3)
 ///
 /// # Examples
 ///
@@ -89,13 +89,13 @@ use serde::{Deserialize, Serialize};
 pub struct FeatureCollection {
     /// Bounding Box
     ///
-    /// [GeoJSON Format Specification § 5](https://tools.ietf.org/html/rfc7946#section-5)
+    /// [GeoJSON Format Specification 5](https://tools.ietf.org/html/rfc7946#section-5)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub bbox: Option<Bbox>,
     pub features: Vec<Feature>,
     /// Foreign Members
     ///
-    /// [GeoJSON Format Specification § 6](https://tools.ietf.org/html/rfc7946#section-6.1)
+    /// [GeoJSON Format Specification 6](https://tools.ietf.org/html/rfc7946#section-6.1)
     ///
     /// See the [crate-level foreign members documentation](crate#foreign-members) for details,
     /// including limitations on key names.

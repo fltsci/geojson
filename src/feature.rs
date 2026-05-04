@@ -21,7 +21,7 @@ use serde::{Deserialize, Serialize};
 
 /// Feature Object
 ///
-/// [GeoJSON Format Specification § 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
+/// [GeoJSON Format Specification 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
 ///
 /// # Examples
 ///
@@ -65,21 +65,21 @@ use serde::{Deserialize, Serialize};
 pub struct Feature {
     /// Bounding Box
     ///
-    /// [GeoJSON Format Specification § 5](https://tools.ietf.org/html/rfc7946#section-5)
+    /// [GeoJSON Format Specification 5](https://tools.ietf.org/html/rfc7946#section-5)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub bbox: Option<Bbox>,
     /// Geometry
     ///
-    /// [GeoJSON Format Specification § 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
+    /// [GeoJSON Format Specification 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
     pub geometry: Option<Geometry>,
     /// Identifier
     ///
-    /// [GeoJSON Format Specification § 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
+    /// [GeoJSON Format Specification 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<feature::Id>,
     /// Properties
     ///
-    /// [GeoJSON Format Specification § 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
+    /// [GeoJSON Format Specification 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
     ///
     /// NOTE: This crate will permissively parse a Feature whose json is missing a `properties` key.
     /// Because the spec implies that the `properties` key must be present, we will always include
@@ -87,7 +87,7 @@ pub struct Feature {
     pub properties: Option<JsonObject>,
     /// Foreign Members
     ///
-    /// [GeoJSON Format Specification § 6](https://tools.ietf.org/html/rfc7946#section-6.1)
+    /// [GeoJSON Format Specification 6](https://tools.ietf.org/html/rfc7946#section-6.1)
     ///
     /// See the [crate-level foreign members documentation](crate#foreign-members) for details,
     /// including limitations on key names.
@@ -240,7 +240,7 @@ impl Feature {
 
 /// Feature identifier
 ///
-/// [GeoJSON Format Specification § 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
+/// [GeoJSON Format Specification 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(untagged, expecting = "Feature 'id' must be a string or a number")]
 pub enum Id {
