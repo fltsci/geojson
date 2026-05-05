@@ -124,16 +124,21 @@ mod deserialize {
     ///
     /// See: https://github.com/serde-rs/serde/issues/3028
     #[derive(Deserialize)]
+    #[cfg_attr(feature = "specta", derive(specta::Type))]
+    #[cfg_attr(feature = "specta", specta(inline))]
     pub(crate) struct DeserializeFeatureCollectionHelper {
         #[allow(unused)]
         r#type: FeatureCollectionType,
         bbox: Option<Bbox>,
         features: Vec<Feature>,
         #[serde(flatten)]
+        #[cfg_attr(feature = "specta", specta(skip))]
         foreign_members: Option<JsonObject>,
     }
 
     #[derive(Deserialize)]
+    #[cfg_attr(feature = "specta", derive(specta::Type))]
+    #[cfg_attr(feature = "specta", specta(inline))]
     enum FeatureCollectionType {
         FeatureCollection,
     }

@@ -109,6 +109,8 @@ mod deserialize {
     ///
     /// See: https://github.com/serde-rs/serde/issues/3028
     #[derive(Deserialize)]
+    #[cfg_attr(feature = "specta", derive(specta::Type))]
+    #[cfg_attr(feature = "specta", specta(inline))]
     pub(crate) struct DeserializeFeatureHelper {
         #[allow(unused)]
         r#type: FeatureType,
@@ -117,10 +119,13 @@ mod deserialize {
         id: Option<feature::Id>,
         properties: Option<JsonObject>,
         #[serde(flatten)]
+        #[cfg_attr(feature = "specta", specta(skip))]
         foreign_members: Option<JsonObject>,
     }
 
     #[derive(Deserialize)]
+    #[cfg_attr(feature = "specta", derive(specta::Type))]
+    #[cfg_attr(feature = "specta", specta(inline))]
     enum FeatureType {
         Feature,
     }
@@ -245,7 +250,11 @@ impl Feature {
 /// [GeoJSON Format Specification 3.2](https://tools.ietf.org/html/rfc7946#section-3.2)
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "specta", derive(specta::Type))]
-#[serde(untagged, expecting = "Feature 'id' must be a string or a number")]
+#[serde(untagged)]
+#[cfg_attr(
+    not(feature = "specta"),
+    serde(expecting = "Feature 'id' must be a string or a number")
+)]
 pub enum Id {
     String(String),
     Number(serde_json::Number),
@@ -391,7 +400,14 @@ mod tests {
         let Error::MalformedGeoJson(serde_err) = err else {
             panic!("expected serde error");
         };
+        // The friendly "expected Geometry object" message is produced by
+        // `#[serde(expecting = ...)]` on `RawGeometry`, which we cfg-out under
+        // the `specta` feature because specta-rc.24's macro parser trips on
+        // it. Either way we still expect a serde error here.
+        #[cfg(not(feature = "specta"))]
         assert!(serde_err.to_string().contains("expected Geometry object"));
+        #[cfg(feature = "specta")]
+        let _ = serde_err;
     }
 
     #[test]
@@ -451,11 +467,18 @@ mod tests {
         let Error::MalformedGeoJson(serde_err) = err else {
             panic!("expected serde error");
         };
+        // The friendly "Feature 'id' must be a string or a number" message
+        // comes from `#[serde(expecting = ...)]` on `Id`, cfg-gated off
+        // under the `specta` feature (rc.24's parser rejects `expecting`).
+        // Either way we still expect a serde error here.
+        #[cfg(not(feature = "specta"))]
         assert!(
             serde_err
                 .to_string()
                 .contains("Feature 'id' must be a string or a number")
         );
+        #[cfg(feature = "specta")]
+        let _ = serde_err;
     }
 
     #[test]

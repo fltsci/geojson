@@ -338,6 +338,8 @@ pub(crate) mod deserialize {
 
     /// Internal enum for geometry type discrimination during deserialization.
     #[derive(Debug, Clone, PartialEq, Deserialize)]
+    #[cfg_attr(feature = "specta", derive(specta::Type))]
+    #[cfg_attr(feature = "specta", specta(inline))]
     pub enum GeometryType {
         Point,
         LineString,
@@ -491,10 +493,13 @@ pub(crate) mod deserialize {
     /// Internal struct for deserializing geometry JSON into before converting to Geometry.
     /// This captures all possible geometry fields, allowing validation during TryFrom conversion.
     #[derive(Debug, Clone, Deserialize)]
-    #[serde(expecting = "Geometry object")]
+    #[cfg_attr(feature = "specta", derive(specta::Type))]
+    #[cfg_attr(feature = "specta", specta(inline))]
+    #[cfg_attr(not(feature = "specta"), serde(expecting = "Geometry object"))]
     pub(crate) struct RawGeometry {
         pub(crate) r#type: GeometryType,
         #[serde(default)]
+        #[cfg_attr(feature = "specta", specta(skip))]
         pub(crate) coordinates: Option<Coordinates>,
         #[serde(default)]
         pub(crate) geometries: Option<Vec<Geometry>>,
@@ -502,6 +507,7 @@ pub(crate) mod deserialize {
         pub(crate) bbox: Option<Bbox>,
         /// Captures all other fields as foreign members
         #[serde(flatten)]
+        #[cfg_attr(feature = "specta", specta(skip))]
         pub(crate) foreign_members: Option<JsonObject>,
     }
 
