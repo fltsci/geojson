@@ -30,9 +30,7 @@ use tinyvec::TinyVec;
 /// ```
 #[derive(Debug, Clone, PartialEq, PartialOrd, Serialize, Deserialize)]
 #[cfg_attr(feature = "specta", derive(specta::Type))]
-pub struct Position(
-    #[cfg_attr(feature = "specta", specta(type = Vec<f64>))] TinyVec<[f64; 2]>,
-);
+pub struct Position(#[cfg_attr(feature = "specta", specta(type = Vec<f64>))] TinyVec<[f64; 2]>);
 
 impl Position {
     pub fn as_slice(&self) -> &[f64] {
