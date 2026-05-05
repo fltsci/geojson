@@ -85,6 +85,12 @@ pub struct Feature {
     /// NOTE: This crate will permissively parse a Feature whose json is missing a `properties` key.
     /// Because the spec implies that the `properties` key must be present, we will always include
     /// the `properties` key when serializing.
+    // specta-rc.24's `serde_json::Value` Type impl is `inline: true` and
+    // recursive (Array<Value>, Map<String, Value>), so when emitted into a
+    // struct field the inlined arms reference an undefined `Value` name.
+    // Override the field at the TS layer to `unknown` -- consumers already
+    // have to walk this opaquely.
+    #[cfg_attr(feature = "specta", specta(type = specta_typescript::Unknown))]
     pub properties: Option<JsonObject>,
     /// Foreign Members
     ///
