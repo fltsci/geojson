@@ -265,7 +265,7 @@ impl Feature {
 )]
 pub enum Id {
     String(String),
-    Number(serde_json::Number),
+    Number(#[cfg_attr(feature = "specta", specta(type = f64))] serde_json::Number),
 }
 
 #[cfg(test)]
