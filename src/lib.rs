@@ -454,3 +454,6 @@ pub use conversion::quick_collection;
 pub type JsonValue = serde_json::Value;
 pub type JsonObject = serde_json::Map<String, JsonValue>;
 pub type MalformedGeoJsonError = serde_json::Error;
+
+#[cfg(feature = "specta")]
+pub mod specta_compat;

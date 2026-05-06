@@ -85,6 +85,10 @@ pub struct Feature {
     /// NOTE: This crate will permissively parse a Feature whose json is missing a `properties` key.
     /// Because the spec implies that the `properties` key must be present, we will always include
     /// the `properties` key when serializing.
+    #[cfg_attr(
+        feature = "specta",
+        specta(type = Option<std::collections::HashMap<String, crate::specta_compat::JsonValue>>)
+    )]
     pub properties: Option<JsonObject>,
     /// Foreign Members
     ///
@@ -117,6 +121,10 @@ mod deserialize {
         bbox: Option<Bbox>,
         geometry: Option<Geometry>,
         id: Option<feature::Id>,
+        #[cfg_attr(
+            feature = "specta",
+            specta(type = Option<std::collections::HashMap<String, crate::specta_compat::JsonValue>>)
+        )]
         properties: Option<JsonObject>,
         #[serde(flatten)]
         #[cfg_attr(feature = "specta", specta(skip))]
