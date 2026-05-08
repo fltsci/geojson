@@ -36,21 +36,24 @@ impl specta::Type for JsonValue {
         const NAME: &str = "JsonValue";
         const SENTINEL: &str = "geojson::specta_compat::JsonValue";
 
+        fn build(_types: &mut specta::Types) -> DataType {
+            DataType::Reference(specta_typescript::define(
+                "null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue }",
+            ))
+        }
+
         let reference = NamedDataType::init_with_sentinel(
             SENTINEL,
             &[],
             false,
             false,
             types,
-            |_types, ndt| {
+            |types, ndt| {
                 ndt.name = Cow::Borrowed(NAME);
                 ndt.module_path = Cow::Borrowed(module_path!());
+                ndt.ty = Some(build(types));
             },
-            |_types| {
-                DataType::Reference(specta_typescript::define(
-                    "null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue }",
-                ))
-            },
+            build,
         );
         DataType::Reference(reference)
     }
